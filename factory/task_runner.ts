@@ -1,9 +1,9 @@
 import { readFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { mutationLoop, type MutationTask } from "../loop/mutation_loop";
-import { recordMetric } from "../runtime/metrics";
-import { shouldEscalate } from "./escalation_policy";
-import { type EscalationTask } from "./escalation_task";
+import { mutationLoop, type MutationTask } from "../loop/mutation_loop.js";
+import { recordMetric } from "../runtime/metrics.js";
+import { shouldEscalate } from "./escalation_policy.js";
+import { type EscalationTask } from "./escalation_task.js";
 
 export type TaskRunnerResult = {
   escalated: boolean;
@@ -54,7 +54,10 @@ export async function runTaskRunner(
     ),
   );
   console.log("[DETERMA] LOOP COMPLETE");
-  return { escalated: escalations === 1, escalationTask };
+  if (escalationTask) {
+    return { escalated: true, escalationTask };
+  }
+  return { escalated: false };
 }
 
 if (process.argv[1] && process.argv[1].includes("task_runner.ts")) {

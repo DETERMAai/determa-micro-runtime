@@ -13,8 +13,7 @@ MUTATION_REQUESTED
   v
 VALIDATION_GATES
   |
-  v
-VALIDATION_DENIED
+  +--> VALIDATION_DENIED --> LOOP_CONTINUE
   |
   v
 ATOMIC_APPLY
@@ -29,6 +28,9 @@ EXECUTION_DENIED
 ROLLBACK_APPLIED
   |
   v
+FAILURE_CONVERGENCE
+  |
+  v
 TASK_HALTED
   |
   v
@@ -37,8 +39,7 @@ ESCALATION_REQUIRED
 
 ## Operational Semantics
 
-- `VALIDATION_DENIED` is a deny branch before atomic apply.
+- `VALIDATION_DENIED` returns directly to loop continue and never reaches atomic apply.
 - `EXECUTION_DENIED` triggers rollback containment.
-- `TASK_HALTED` occurs after convergence threshold on repeated local failures.
+- `TASK_HALTED` occurs after failure convergence threshold on repeated local failures.
 - `ESCALATION_REQUIRED` is a boundary signal after local containment is exhausted.
-

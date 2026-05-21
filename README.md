@@ -180,18 +180,18 @@ Not included:
 
 ## Runtime Comparison
 
-Ratings below measure execution containment quality, not reasoning intelligence or coding benchmark capability.
+Comparison below measures execution containment behavior, not reasoning benchmark capability.
 
 | System | Execution Stability | Cost Efficiency | Determinism | Containment | Cheap Local Models |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| DETERMA + Ollama | 9 | 10 | 10 | 10 | 10 |
-| OpenHands | 6 | 5 | 4 | 5 | 5 |
-| CrewAI | 5 | 6 | 3 | 4 | 6 |
-| LangGraph Agents | 6 | 6 | 5 | 5 | 6 |
-| AutoGen | 5 | 5 | 3 | 4 | 5 |
-| Cursor Agent | 6 | 4 | 4 | 5 | 3 |
-| Claude Code | 7 | 3 | 6 | 6 | 2 |
-| Devin-style systems | 6 | 2 | 5 | 5 | 1 |
+| --- | --- | --- | --- | --- | --- |
+| DETERMA + Ollama | Strong | Strong | Strong | Strong | Strong |
+| OpenHands | Moderate | Moderate | Moderate | Moderate | Moderate |
+| CrewAI | Moderate | Moderate | Weak | Weak | Moderate |
+| LangGraph Agents | Moderate | Moderate | Moderate | Moderate | Moderate |
+| AutoGen | Moderate | Moderate | Weak | Weak | Moderate |
+| Cursor Agent | Moderate | Weak | Moderate | Moderate | Weak |
+| Claude Code | Moderate | Weak | Moderate | Moderate | Weak |
+| Devin-style systems | Moderate | Weak | Moderate | Moderate | Weak |
 
 DETERMA optimizes for bounded execution, rollback containment, convergence halt semantics, deterministic runtime governance, and cheap local autonomous execution.
 
@@ -224,10 +224,10 @@ npx tsx factory/proof_runner.ts
 
 ## Documentation
 
-- Foundation: [docs/00_foundation/RUNTIME_STATE_MACHINE.md](docs/00_foundation/RUNTIME_STATE_MACHINE.md)
+- Foundation: [docs/00_foundation/RUNTIME_STATE_MACHINE.md](docs/00_foundation/RUNTIME_STATE_MACHINE.md), [docs/00_foundation/MVP_STATUS.md](docs/00_foundation/MVP_STATUS.md)
 - Runtime proofs: [docs/01_runtime_proofs/VALIDATION_DENIAL_PROOF.md](docs/01_runtime_proofs/VALIDATION_DENIAL_PROOF.md), [docs/01_runtime_proofs/ROLLBACK_CONTAINMENT_PROOF.md](docs/01_runtime_proofs/ROLLBACK_CONTAINMENT_PROOF.md), [docs/01_runtime_proofs/TASK_HALTED_PROOF.md](docs/01_runtime_proofs/TASK_HALTED_PROOF.md), [docs/01_runtime_proofs/ESCALATION_BOUNDARY_PROOF.md](docs/01_runtime_proofs/ESCALATION_BOUNDARY_PROOF.md)
 - Runtime economics: [docs/02_runtime_economics/EXECUTION_STABILITY_METRICS.md](docs/02_runtime_economics/EXECUTION_STABILITY_METRICS.md)
-- Architecture: [docs/03_architecture/MUTATION_LOOP.md](docs/03_architecture/MUTATION_LOOP.md), [docs/03_architecture/VALIDATION_GATES.md](docs/03_architecture/VALIDATION_GATES.md), [docs/03_architecture/ESCALATION_POLICY.md](docs/03_architecture/ESCALATION_POLICY.md), [docs/03_architecture/METRICS_PIPELINE.md](docs/03_architecture/METRICS_PIPELINE.md)
+- Architecture: [docs/03_architecture/MUTATION_LOOP.md](docs/03_architecture/MUTATION_LOOP.md), [docs/03_architecture/VALIDATION_GATES.md](docs/03_architecture/VALIDATION_GATES.md), [docs/03_architecture/ESCALATION_POLICY.md](docs/03_architecture/ESCALATION_POLICY.md), [docs/03_architecture/METRICS_PIPELINE.md](docs/03_architecture/METRICS_PIPELINE.md), [docs/03_architecture/FUTURE_RUNTIME_HARDENING.md](docs/03_architecture/FUTURE_RUNTIME_HARDENING.md)
 - Comparisons: [docs/04_comparisons/RUNTIME_COMPARISON.md](docs/04_comparisons/RUNTIME_COMPARISON.md)
 
 ## License

@@ -1,7 +1,7 @@
 import { readFileSync, rmSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
-import { mutationLoop, type MutationTask } from "../loop/mutation_loop";
-import { runTaskRunner } from "./task_runner";
+import { mutationLoop, type MutationTask } from "../loop/mutation_loop.js";
+import { runTaskRunner } from "./task_runner.js";
 
 function readTask(repoRoot: string, taskPath: string): MutationTask {
   return JSON.parse(readFileSync(resolve(repoRoot, taskPath), "utf-8")) as MutationTask;

@@ -1,4 +1,12 @@
-{"timestamp":"2026-05-21T00:03:52.558Z","event":"MUTATION_REQUESTED","tokens":53,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
-{"timestamp":"2026-05-21T00:04:23.602Z","event":"MUTATION_REQUESTED","tokens":46,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
-{"timestamp":"2026-05-21T00:04:23.723Z","event":"EXECUTION_DENIED","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
-{"timestamp":"2026-05-21T00:04:23.725Z","event":"ROLLBACK_APPLIED","rollback":true,"target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.510Z","event":"MUTATION_REQUESTED","tokens":57,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.512Z","event":"MUTATION_REQUESTED","tokens":10,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.561Z","event":"VALIDATION_DENIED","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.563Z","event":"MUTATION_REQUESTED","tokens":52,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.564Z","event":"MUTATION_REQUESTED","tokens":11,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.598Z","event":"VALIDATION_DENIED","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.599Z","event":"MUTATION_REQUESTED","tokens":52,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.599Z","event":"MUTATION_REQUESTED","tokens":14,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.623Z","event":"VALIDATION_DENIED","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.625Z","event":"TASK_HALTED","halted":true,"target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.626Z","event":"TASK_HALTED","halted":true,"target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T09:04:45.626Z","event":"ESCALATION_REQUIRED","escalated":true,"target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py","localModel":"qwen2.5-coder:7b"}

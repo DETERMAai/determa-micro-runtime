@@ -2,20 +2,21 @@
   "name": "determa-micro-runtime",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "directories": {
     "example": "examples"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "typecheck": "tsc --noEmit",
+    "proof": "tsx factory/proof_runner.ts",
+    "start": "tsx factory/task_runner.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "@types/node": "^25.9.1",
     "tsx": "^4.22.3",
-    "typescript": "^6.0.3"
+    "typescript": "^5.8.3"
   }
 }

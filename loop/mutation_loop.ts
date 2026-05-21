@@ -2,20 +2,20 @@ import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
-import { requestOneMutation } from "../model/local_model";
-import { buildPrompt } from "../model/prompt_builder";
+import { requestOneMutation } from "../model/local_model.js";
+import { buildPrompt } from "../model/prompt_builder.js";
 import {
   getTargetFailureCount,
   markTaskHalted,
   recordTargetFailure,
   shouldHalt,
-} from "../runtime/failure_convergence";
-import { appendMutationJournal } from "../runtime/journal";
-import { estimateTokens, recordMetric } from "../runtime/metrics";
-import { recordFailure, seenFailure } from "../runtime/replay_guard";
-import { backupFile, restoreFile } from "../runtime/rollback";
-import { validateExecutionBudget, validateScope } from "../runtime/runtime_gateway";
-import { runValidationGates } from "../runtime/validation_gates";
+} from "../runtime/failure_convergence.js";
+import { appendMutationJournal } from "../runtime/journal.js";
+import { estimateTokens, recordMetric } from "../runtime/metrics.js";
+import { recordFailure, seenFailure } from "../runtime/replay_guard.js";
+import { backupFile, restoreFile } from "../runtime/rollback.js";
+import { validateExecutionBudget, validateScope } from "../runtime/runtime_gateway.js";
+import { runValidationGates } from "../runtime/validation_gates.js";
 
 function stripCodeFence(text: string): string {
   const trimmed = text.trim();
