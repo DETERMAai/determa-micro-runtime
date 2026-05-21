@@ -1,11 +1,17 @@
 import { execSync } from "node:child_process";
 import { createHash } from "node:crypto";
 import { readFileSync, renameSync, writeFileSync } from "node:fs";
-import { resolve } from "node:path";
+import { dirname, resolve } from "node:path";
 import { requestOneMutation } from "../model/local_model";
 import { buildPrompt } from "../model/prompt_builder";
-import { recordTargetFailure, shouldHalt } from "../runtime/failure_convergence";
+import {
+  getTargetFailureCount,
+  markTaskHalted,
+  recordTargetFailure,
+  shouldHalt,
+} from "../runtime/failure_convergence";
 import { appendMutationJournal } from "../runtime/journal";
+import { estimateTokens, recordMetric } from "../runtime/metrics";
 import { recordFailure, seenFailure } from "../runtime/replay_guard";
 import { backupFile, restoreFile } from "../runtime/rollback";
 import { validateExecutionBudget, validateScope } from "../runtime/runtime_gateway";
@@ -17,18 +23,41 @@ function stripCodeFence(text: string): string {
   return lines.slice(1, lines.length - 1).join("\n");
 }
 
+export type MutationTask = {
+  target: string;
+  prompt: string;
+  test: string;
+  model: string;
+};
+
+export type MutationLoopResult = {
+  halted: boolean;
+  failureCount: number;
+  previousFailures: string[];
+  mutations: number;
+  rollbacks: number;
+  halts: number;
+  estimatedTokens: number;
+};
+
 export async function mutationLoop(
   repoRoot: string,
-  model: string,
+  task: MutationTask,
   maxSteps = 1,
-): Promise<void> {
-  const authPath = resolve(repoRoot, "examples/auth_bug/auth.py");
-  const testCwd = resolve(repoRoot, "examples/auth_bug");
+): Promise<MutationLoopResult> {
+  const authPath = resolve(repoRoot, task.target);
+  const testCwd = dirname(authPath);
   const journalPath = resolve(repoRoot, "journal/mutations.log");
+  const previousFailures: string[] = [];
+  let halted = false;
+  let mutations = 0;
+  let rollbacks = 0;
+  let halts = 0;
+  let estimatedTokens = 0;
 
   for (let i = 0; i < maxSteps; i += 1) {
     const current = readFileSync(authPath, "utf-8");
-    const prompt = `${buildPrompt()}\n\nCurrent auth.py:\n${current}`;
+    const prompt = `${buildPrompt(task.target, task.prompt)}\n\nCurrent file:\n${current}`;
     if (!validateExecutionBudget(prompt)) {
       throw new Error("prompt budget exceeded");
     }
@@ -37,12 +66,40 @@ export async function mutationLoop(
     }
     if (shouldHalt(authPath)) {
       appendMutationJournal(journalPath, authPath, "TASK_HALTED");
-      console.log("[DETERMA] TASK HALTED");
+      console.log("[DETERMA] TASK_HALTED");
+      recordMetric({
+        timestamp: new Date().toISOString(),
+        event: "TASK_HALTED",
+        halted: true,
+        target: authPath,
+      });
+      markTaskHalted(authPath);
+      halted = true;
+      halts += 1;
       break;
     }
 
-    const mutation = await requestOneMutation(model, prompt);
+    console.log("[DETERMA] MUTATION REQUESTED");
+    mutations += 1;
+    const promptTokens = estimateTokens(prompt);
+    recordMetric({
+      timestamp: new Date().toISOString(),
+      event: "MUTATION_REQUESTED",
+      tokens: promptTokens,
+      localModel: task.model,
+      target: authPath,
+    });
+    const mutation = await requestOneMutation(task.model, prompt);
     const candidate = stripCodeFence(mutation).trim();
+    const responseTokens = estimateTokens(candidate);
+    estimatedTokens += promptTokens + responseTokens;
+    recordMetric({
+      timestamp: new Date().toISOString(),
+      event: "MUTATION_REQUESTED",
+      tokens: responseTokens,
+      localModel: task.model,
+      target: authPath,
+    });
     const hash = createHash("sha256").update(candidate).digest("hex");
 
     if (seenFailure(hash)) {
@@ -56,25 +113,38 @@ export async function mutationLoop(
     renameSync(tmpPath, authPath);
 
     try {
-      execSync("pytest -q", { cwd: testCwd, stdio: "ignore" });
+      execSync(task.test, { cwd: testCwd, stdio: "ignore" });
       appendMutationJournal(journalPath, hash, "EXECUTION_ALLOWED");
     } catch {
       restoreFile(authPath);
       recordTargetFailure(authPath);
       recordFailure(hash);
+      previousFailures.push(hash);
       appendMutationJournal(journalPath, hash, "EXECUTION_DENIED");
+      recordMetric({
+        timestamp: new Date().toISOString(),
+        event: "EXECUTION_DENIED",
+        target: authPath,
+      });
+      console.log("[DETERMA] EXECUTION_DENIED");
+      rollbacks += 1;
+      recordMetric({
+        timestamp: new Date().toISOString(),
+        event: "ROLLBACK_APPLIED",
+        rollback: true,
+        target: authPath,
+      });
+      console.log("[DETERMA] ROLLBACK APPLIED");
     }
   }
+
+  return {
+    halted,
+    failureCount: getTargetFailureCount(authPath),
+    previousFailures,
+    mutations,
+    rollbacks,
+    halts,
+    estimatedTokens,
+  };
 }
-
-const repoRoot = process.cwd();
-
-mutationLoop(repoRoot, "qwen2.5-coder:7b")
-  .then(() => {
-    console.log("[DETERMA] LOOP COMPLETE");
-  })
-  .catch((err) => {
-    console.error("[DETERMA] LOOP FAILED");
-    console.error(err);
-    process.exit(1);
-  });

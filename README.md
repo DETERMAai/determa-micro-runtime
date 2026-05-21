@@ -176,7 +176,40 @@ Not included:
 - external databases
 - framework abstractions
 
+## Runtime Comparison
+
+Ratings below measure execution containment quality, not reasoning intelligence or coding benchmark capability.
+
+| System | Execution Stability | Cost Efficiency | Determinism | Containment | Cheap Local Models |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| DETERMA + Ollama | 9 | 10 | 10 | 10 | 10 |
+| OpenHands | 6 | 5 | 4 | 5 | 5 |
+| CrewAI | 5 | 6 | 3 | 4 | 6 |
+| LangGraph Agents | 6 | 6 | 5 | 5 | 6 |
+| AutoGen | 5 | 5 | 3 | 4 | 5 |
+| Cursor Agent | 6 | 4 | 4 | 5 | 3 |
+| Claude Code | 7 | 3 | 6 | 6 | 2 |
+| Devin-style systems | 6 | 2 | 5 | 5 | 1 |
+
+DETERMA optimizes for bounded execution, rollback containment, convergence halt semantics, deterministic runtime governance, and cheap local autonomous execution.
+
+Existing agent systems are primarily optimized for reasoning capability, orchestration, long-context autonomy, tool recursion, and planning complexity.
+
+## What DETERMA Measures
+
+- rollback recovery rate
+- retry collapse prevention
+- escalation efficiency
+- execution stability economics
+- bounded execution behavior
+
+## What DETERMA Does NOT Optimize For
+
+- large-scale planning
+- multi-agent orchestration
+- long-context reasoning
+- autonomous repo-wide refactors
+
 ## License
 
 MIT. See [LICENSE](LICENSE).
-

@@ -1,0 +1,4 @@
+{"timestamp":"2026-05-21T00:03:52.558Z","event":"MUTATION_REQUESTED","tokens":53,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T00:04:23.602Z","event":"MUTATION_REQUESTED","tokens":46,"localModel":"qwen2.5-coder:7b","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T00:04:23.723Z","event":"EXECUTION_DENIED","target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
+{"timestamp":"2026-05-21T00:04:23.725Z","event":"ROLLBACK_APPLIED","rollback":true,"target":"C:\\dev\\determa-governed-pilot-upstream\\determa-micro-runtime\\examples\\auth_bug\\auth.py"}
