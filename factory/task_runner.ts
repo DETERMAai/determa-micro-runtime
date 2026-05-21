@@ -5,17 +5,24 @@ import { recordMetric } from "../runtime/metrics";
 import { shouldEscalate } from "./escalation_policy";
 import { type EscalationTask } from "./escalation_task";
 
-async function run(): Promise<void> {
-  const repoRoot = process.cwd();
-  const taskFile = process.argv[2] ?? "factory/tasks/auth_fix.json";
+export type TaskRunnerResult = {
+  escalated: boolean;
+  escalationTask?: EscalationTask;
+};
+
+export async function runTaskRunner(
+  repoRoot = process.cwd(),
+  taskFile = "factory/tasks/auth_fix.json",
+): Promise<TaskRunnerResult> {
   const taskPath = resolve(repoRoot, taskFile);
   const task = JSON.parse(readFileSync(taskPath, "utf-8")) as MutationTask;
 
   console.log("[DETERMA] TASK START");
   const result = await mutationLoop(repoRoot, task);
   let escalations = 0;
+  let escalationTask: EscalationTask | undefined;
   if (result.halted && shouldEscalate(resolve(repoRoot, task.target))) {
-    const escalationTask: EscalationTask = {
+    escalationTask = {
       target: task.target,
       prompt: task.prompt,
       failureCount: result.failureCount,
@@ -47,10 +54,14 @@ async function run(): Promise<void> {
     ),
   );
   console.log("[DETERMA] LOOP COMPLETE");
+  return { escalated: escalations === 1, escalationTask };
 }
 
-run().catch((err) => {
-  console.error("[DETERMA] LOOP FAILED");
-  console.error(err);
-  process.exit(1);
-});
+if (process.argv[1] && process.argv[1].includes("task_runner.ts")) {
+  const taskFile = process.argv[2] ?? "factory/tasks/auth_fix.json";
+  runTaskRunner(process.cwd(), taskFile).catch((err) => {
+    console.error("[DETERMA] LOOP FAILED");
+    console.error(err);
+    process.exit(1);
+  });
+}

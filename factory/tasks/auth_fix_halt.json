@@ -1,0 +1,7 @@
+{
+  "target": "examples/auth_bug/auth.py",
+  "prompt": "Fix password mismatch bug",
+  "test": "pytest -q",
+  "model": "qwen2.5-coder:7b"
+}
+

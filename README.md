@@ -97,6 +97,7 @@ Execution boundary checks in-loop:
 ```
 prompt length <= 4000
 scope path does not contain ".."
+validation gates: non-empty, non-destructive text, python syntax compile
 replay hash not previously failed
 target failure count < 3
 ```
@@ -108,6 +109,7 @@ target failure count < 3
 - `failure_convergence.ts`: in-memory target halt (`recordTargetFailure`, `shouldHalt`)
 - `rollback.ts`: backup and restore via filesystem copy
 - `journal.ts`: append-only JSONL mutation journal
+- `validation_gates.ts`: non-empty, destructive-text, and python syntax gates
 - `prompt_builder.ts`: fixed tiny prompt
 - `local_model.ts`: one Ollama generate call, no retries
 - `mutation_loop.ts`: deterministic executor with entrypoint
@@ -209,6 +211,24 @@ Existing agent systems are primarily optimized for reasoning capability, orchest
 - multi-agent orchestration
 - long-context reasoning
 - autonomous repo-wide refactors
+
+## Proof Scenarios
+
+Run deterministic runtime proof scenarios:
+
+```bash
+npx tsx factory/proof_runner.ts
+```
+
+`proof_runner.ts` uses deterministic mock mutation responses (`DETERMA_MOCK_RESPONSE`) to verify `VALIDATION_DENIED`, `TASK_HALTED`, and `ESCALATION_REQUIRED` runtime states.
+
+## Documentation
+
+- Foundation: [docs/00_foundation/RUNTIME_STATE_MACHINE.md](docs/00_foundation/RUNTIME_STATE_MACHINE.md)
+- Runtime proofs: [docs/01_runtime_proofs/VALIDATION_DENIAL_PROOF.md](docs/01_runtime_proofs/VALIDATION_DENIAL_PROOF.md), [docs/01_runtime_proofs/ROLLBACK_CONTAINMENT_PROOF.md](docs/01_runtime_proofs/ROLLBACK_CONTAINMENT_PROOF.md), [docs/01_runtime_proofs/TASK_HALTED_PROOF.md](docs/01_runtime_proofs/TASK_HALTED_PROOF.md), [docs/01_runtime_proofs/ESCALATION_BOUNDARY_PROOF.md](docs/01_runtime_proofs/ESCALATION_BOUNDARY_PROOF.md)
+- Runtime economics: [docs/02_runtime_economics/EXECUTION_STABILITY_METRICS.md](docs/02_runtime_economics/EXECUTION_STABILITY_METRICS.md)
+- Architecture: [docs/03_architecture/MUTATION_LOOP.md](docs/03_architecture/MUTATION_LOOP.md), [docs/03_architecture/VALIDATION_GATES.md](docs/03_architecture/VALIDATION_GATES.md), [docs/03_architecture/ESCALATION_POLICY.md](docs/03_architecture/ESCALATION_POLICY.md), [docs/03_architecture/METRICS_PIPELINE.md](docs/03_architecture/METRICS_PIPELINE.md)
+- Comparisons: [docs/04_comparisons/RUNTIME_COMPARISON.md](docs/04_comparisons/RUNTIME_COMPARISON.md)
 
 ## License
 

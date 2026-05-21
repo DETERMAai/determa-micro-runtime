@@ -2,6 +2,10 @@ export async function requestOneMutation(
   model: string,
   prompt: string,
 ): Promise<string> {
+  if (process.env.DETERMA_MOCK_RESPONSE !== undefined) {
+    return process.env.DETERMA_MOCK_RESPONSE;
+  }
+
   const res = await fetch("http://127.0.0.1:11434/api/generate", {
     method: "POST",
     headers: { "content-type": "application/json" },
@@ -22,4 +26,3 @@ export async function requestOneMutation(
   }
   return data.response;
 }
-

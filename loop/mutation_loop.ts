@@ -15,6 +15,7 @@ import { estimateTokens, recordMetric } from "../runtime/metrics";
 import { recordFailure, seenFailure } from "../runtime/replay_guard";
 import { backupFile, restoreFile } from "../runtime/rollback";
 import { validateExecutionBudget, validateScope } from "../runtime/runtime_gateway";
+import { runValidationGates } from "../runtime/validation_gates";
 
 function stripCodeFence(text: string): string {
   const trimmed = text.trim();
@@ -104,6 +105,20 @@ export async function mutationLoop(
 
     if (seenFailure(hash)) {
       appendMutationJournal(journalPath, hash, "REPLAY_DENIED");
+      continue;
+    }
+    const gate = runValidationGates(candidate);
+    if (!gate.allowed) {
+      recordTargetFailure(authPath);
+      recordFailure(hash);
+      previousFailures.push(hash);
+      appendMutationJournal(journalPath, hash, "VALIDATION_DENIED");
+      recordMetric({
+        timestamp: new Date().toISOString(),
+        event: "VALIDATION_DENIED",
+        target: authPath,
+      });
+      console.log("[DETERMA] VALIDATION_DENIED");
       continue;
     }
 
