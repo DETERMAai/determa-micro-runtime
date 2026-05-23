@@ -1,7 +1,0 @@
-{
-  "target": "examples/auth_bug/auth.py",
-  "prompt": "Return invalid Python syntax intentionally",
-  "test": "pytest -q",
-  "model": "qwen2.5-coder:7b"
-}
-
