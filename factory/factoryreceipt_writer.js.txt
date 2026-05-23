@@ -1,0 +1,48 @@
+import fs from "fs";
+import crypto from "crypto";
+
+const receiptsDir = "./receipts";
+
+if (!fs.existsSync(receiptsDir)) {
+  fs.mkdirSync(receiptsDir);
+}
+
+const files = fs.readdirSync(receiptsDir)
+  .filter(f => f.endsWith(".json"))
+  .sort();
+
+let previousHash = "GENESIS";
+
+if (files.length > 0) {
+  const last = JSON.parse(
+    fs.readFileSync(`${receiptsDir}/${files[files.length - 1]}`)
+  );
+
+  previousHash = last.hash;
+}
+
+const payload = {
+  timestamp: new Date().toISOString(),
+  status: "VALID",
+  previousHash
+};
+
+const hash = crypto
+  .createHash("sha256")
+  .update(JSON.stringify(payload))
+  .digest("hex");
+
+const receipt = {
+  ...payload,
+  hash
+};
+
+const filename = `${Date.now()}.json`;
+
+fs.writeFileSync(
+  `${receiptsDir}/${filename}`,
+  JSON.stringify(receipt, null, 2)
+);
+
+console.log("Receipt persisted");
+console.log(hash);

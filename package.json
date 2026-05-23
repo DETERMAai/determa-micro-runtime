@@ -7,6 +7,7 @@
     "proof:rollback": "node factory/proof_rollback.js",
     "proof:replay": "node factory/proof_replay.js",
     "verify:receipts": "node factory/verify_receipts.js",
-    "runtime:gate": "node factory/runtime_gate.js"
+    "runtime:gate": "node factory/runtime_gate.js",
+    "receipt:write": "node factory/receipt_writer.js"
   }
 }
